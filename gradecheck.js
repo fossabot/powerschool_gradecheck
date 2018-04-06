@@ -41,8 +41,8 @@ function check(username, password) {
       var gradeOptions = {
         method: 'POST',
         uri: 'https://ps.seattleschools.org/guardian/home.html',
-        headers: { 'Host': 'ps.seattleschools.org', 'Connection': 'keep-alive', 'Content-Length': 448, 'Cache-Control': 'max-age=0', 'Origin': 'https://ps.seattleschools.org', 'Upgrade-Insecure-Requests': 1, 'Content-Type': 'application/x-www-form-urlencoded', 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3251.0 Safari/537.36', 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8', 'Referer': 'https://ps.seattleschools.org/public/home.html', 'Accept-Encoding': 'gzip, deflate, br', 'Accept-Language': 'en-US,en;q=0.9', },
-        data: {
+        headers: { 'Host': 'ps.seattleschools.org', 'Connection': 'keep-alive', 'Content-Length': 448, 'Cache-Control': 'max-age=0', 'Origin': 'https://ps.seattleschools.org/public/home.html', 'Upgrade-Insecure-Requests': 1, 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3251.0 Safari/537.36', 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8', 'Referer': 'https://ps.seattleschools.org/public/home.html', 'Accept-Encoding': 'gzip, deflate, br', 'Accept-Language': 'en-US,en;q=0.9', },
+        body: {
           pstoken: '',
           contextData: '',
           dbpw: '',
@@ -54,31 +54,39 @@ function check(username, password) {
           serviceTicket: '',
           pcasServerUrl: '/',
           credentialType: 'User Id and Password Credential',
+          ldappassword: '',
+          Account: '',
           pw: '9a135bc413b98ae45e304f991a500649',
           translatorpw:''
         },
-        transform: function (body) {
-          return cheerio.load(body);
-        },
-        jar: cookiejar,
-        // simple: false, 
+        // transform: function (res) {
+        //   // return cheerio.load(res);
+        // },
+        json: true,
+        jar: $.jar,
+        simple: false, 
         resolveWithFullResponse: true
       };
 
-      // Assign usernam/password from our app
-      gradeOptions.data.Account = username;
-      gradeOptions.data.ldappassword = password;
-
+      console.log('Bypassing SPS Security Systems...');
 
       // SPS "Security mesaures"
-      gradeOptions.data.pstoken = $('body').find('#LoginForm').children().attr('name', 'pstoken').val(); // Power School token!!!
-      gradeOptions.data.contextData = $('body').find('#LoginForm').children().attr('name', 'contextData').val(); // ContextData
-      gradeOptions.data.dbpw = $('body').find('#LoginForm').children().attr('name', 'dbpw').val(); // database password? What?
-      gradeOptions.data.pcasServerUrl = $('body').find('#LoginForm').children().attr('name', 'pcasServerUrl').val(); // Always '/'
+      gradeOptions.body.pstoken = $('body').find('#LoginForm').children().attr('name', 'pstoken').val(); // Power School token!!!
+      gradeOptions.body.contextData = $('body').find('#LoginForm').children().attr('name', 'contextData').val(); // ContextData
+      gradeOptions.body.dbpw = $('body').find('#LoginForm').children().attr('name', 'dbpw').val(); // database password? What?
+      gradeOptions.body.pcasServerUrl = '/'; // Always '/'
 
-      // console.log(gradeOptions.data.pstoken);
+      gradeOptions.body.Account = username;
+      gradeOptions.body.ldappassword = password;
+      // Assign username/password from our app
 
-      getGrades(gradeOptions, cookiejar);
+      console.log('HASHING PASSWORD to match RSA Standard.');
+      require('./md5').encrypt(gradeOptions.body, afterEncrypt);
+
+      function afterEncrypt(){
+        console.log('Decrypting PowerSchool API Token.');
+        getGrades(gradeOptions);
+      }
 
 
     })
@@ -88,15 +96,20 @@ function check(username, password) {
 }
 
 // Get grades
-function getGrades(options, cookiejar) {
-  rp(options).then(($) => {
+function getGrades(options) {
+  rp(options)
+    .then(($) => {
     console.log($);
+    // console.log($.read());
+    console.log('Access Granted.');
 
   }).catch((err) => {
     console.log(err);
+    console.error('Access Denied.');
 
   });
 }
+
 
 
 module.exports = {
