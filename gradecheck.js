@@ -1,6 +1,7 @@
 const rp = require('request-promise');
 const cheerio = require('cheerio');
 const tough = require('tough-cookie');
+const colors = require('colors');
 
 /** Login and download grades
  * @param {string} username - sps_username for user
@@ -101,11 +102,11 @@ function getGrades(options) {
     .then(($) => {
     console.log($);
     // console.log($.read());
-    console.log('Access Granted.');
+    console.log('Access Granted.'.bgGreen);
 
   }).catch((err) => {
     console.log(err);
-    console.error('Access Denied.');
+    console.error('Access Denied.'.bgRed);
 
   });
 }
