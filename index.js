@@ -22,6 +22,11 @@ rl.on('line', (line) => {
     case 'login':
       login();
       break;
+
+    case 'help':
+      console.log('exit - exit the program\nlogin - login to powerschool\nhelp - shows this help message');
+      rl.prompt();
+      break;
     //exit the CLI
     case 'exit':
       console.log('\nGoodbye!\n'.green);
