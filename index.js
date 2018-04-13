@@ -8,26 +8,26 @@ const rl = readline.createInterface({
 
 var username, pw;
 
-//Create a CLI for doing various things in powerschool
+// create a CLI for doing various things in powerschool
 console.log('\nWelcome to the powerschool CLI developed by Avery Wagar and Nathan Laha.\n\n'.cyan);
 rl.prompt();
 rl.on('line', (line) => {
   switch (line.trim()) {
-    //user entered uknown command
+    // user entered uknown command
     default:
     console.log(`'${line.trim()}' is not valid command for the Powerschool Shell, please try again!`.red);
     rl.prompt();
     break;
-    //login to powerschool
+    // login to powerschool
     case 'login':
       login();
       break;
-
+    // shows help message
     case 'help':
-      console.log('exit - exit the program\nlogin - login to powerschool\nhelp - shows this help message');
+      console.log('\nexit - exit the program\nlogin - login to powerschool\nhelp - shows this help message\n'.green);
       rl.prompt();
       break;
-    //exit the CLI
+    // exit the CLI
     case 'exit':
       console.log('\nGoodbye!\n'.green);
       process.exit(0);
@@ -35,9 +35,9 @@ rl.on('line', (line) => {
   }
 });
 
-//function gets called when user types login
+// function gets called when user types login
 function login () {
-  //prompt username
+  // prompt username
   username();
   function username(){
     rl.question('\nWhat is your SPS Username?\n\n', (answer) => {
@@ -53,7 +53,7 @@ function login () {
     }
     );
   }
-  //prompt password
+  // prompt password
   function password(){
     rl.question('\nWhat is your SPS password?\n\n', (answer) => {
       // TODO: Log the answer in a database
@@ -62,7 +62,7 @@ function login () {
       run();
     });
   }
-  //login
+  // login
   function run(){
     console.log('\nLogging in!\n\n');
     require('./gradecheck').check(username, pw);
