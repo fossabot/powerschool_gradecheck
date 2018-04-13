@@ -9,7 +9,7 @@ const rl = readline.createInterface({
 var username, pw;
 
   // create a CLI for doing various things in powerschool
-  console.log('\nWelcome to the PowerSchool CLI developed by Avery Wagar and Nathan Laha. Type help for a list of commands.\n\n'.cyan);
+  console.log('\nWelcome to the PowerSchool CLI developed by Avery Wagar and Nathan Laha. Type help for a list of commands.\n\n'.green);
   rl.prompt();
   rl.on('line', (line) => {
     switch (line.trim()) {
