@@ -8,7 +8,8 @@ const readline = require('readline');
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
-  prompt: 'ps-shell@ps.seattleschools.org:>'.cyan
+  prompt: 'ps-shell@ps.seattleschools.org:>'.cyan,
+  terminal: true
 });
 
 /** Login and download grades
@@ -16,11 +17,14 @@ const rl = readline.createInterface({
  * @param {string} password - unhashed password for user
  */
 
+
 // set up the now variable with the current time
 var now = new time.Date();
 now.setTimezone("America/Los_Angeles");
 
 global.auto = 'off';  
+global.gradestable = '';
+global.semester = 1;
 
 global.p1 = '';
 global.p2 = '';
@@ -56,7 +60,7 @@ function check(username, password) {
         const BUTTON_SELECTOR = '#btn-enter';
         LoginSpinner.stop(true);
         console.log('\nLogin Page Loaded\n'.green);
-        var ContentSpinner = new Spinner('Loading Grades... %s');
+        var ContentSpinner = new Spinner('Loading Grades for ' + username + '... %s');
         ContentSpinner.setSpinnerString('|/-\\');
         ContentSpinner.start();
         // fill out the username
@@ -282,6 +286,14 @@ function check(username, password) {
         var gradecolorP5 = '\x1b[32m';
         var gradecolorP6 = '\x1b[32m';
 
+        // default grade color is green
+        var gradecolor2P1 = '\x1b[32m';
+        var gradecolor2P2 = '\x1b[32m';
+        var gradecolor2P3 = '\x1b[32m';
+        var gradecolor2P4 = '\x1b[32m';
+        var gradecolor2P5 = '\x1b[32m';
+        var gradecolor2P6 = '\x1b[32m';
+
         // 2nd semester grade colors
         if (value[0] < 90){
             gradecolorP1 = '\x1b[36m';
@@ -361,79 +373,79 @@ function check(username, password) {
 
         // 1st semester grade colors
         if (value[24] < 90){
-            gradecolorP1 = '\x1b[36m';
+            gradecolor2P1 = '\x1b[36m';
         }
         if (value[25] < 90){
-            gradecolorP2 = '\x1b[36m';
+            gradecolor2P2 = '\x1b[36m';
         }
         if (value[26] < 90){
-            gradecolorP3 = '\x1b[36m';
+            gradecolor2P3 = '\x1b[36m';
         }
         if (value[27] < 90){
-            gradecolorP4 = '\x1b[36m';
+            gradecolor2P4 = '\x1b[36m';
         }
         if (value[28] < 90){
-            gradecolorP5 = '\x1b[36m';
+            gradecolor2P5 = '\x1b[36m';
         }
         if (value[29] < 90){
-            gradecolorP6 = '\x1b[36m';
+            gradecolor2P6 = '\x1b[36m';
         }
 
         if (value[24] < 80){
-            gradecolorP1 = '\x1b[33m';
+            gradecolor2P1 = '\x1b[33m';
         }
         if (value[25] < 80){
-            gradecolorP2 = '\x1b[33m';
+            gradecolor2P2 = '\x1b[33m';
         }
         if (value[26] < 80){
-            gradecolorP3 = '\x1b[33m';
+            gradecolor2P3 = '\x1b[33m';
         }
         if (value[27] < 80){
-            gradecolorP4 = '\x1b[33m';
+            gradecolor2P4 = '\x1b[33m';
         }
         if (value[28] < 80){
-            gradecolorP5 = '\x1b[33m';
+            gradecolor2P5 = '\x1b[33m';
         }
         if (value[29] < 80){
-            gradecolorP6 = '\x1b[33m';
+            gradecolor2P6 = '\x1b[33m';
         }
 
         if (value[24] < 70){
-            gradecolorP1 = '\x1b[35m';
+            gradecolor2P1 = '\x1b[35m';
         }
         if (value[25] < 70){
-            gradecolorP2 = '\x1b[35m';
+            gradecolor2P2 = '\x1b[35m';
         }
         if (value[26] < 70){
-            gradecolorP3 = '\x1b[35m';
+            gradecolor2P3 = '\x1b[35m';
         }
         if (value[27] < 70){
-            gradecolorP4 = '\x1b[35m';
+            gradecolor2P4 = '\x1b[35m';
         }
         if (value[28] < 70){
-            gradecolorP5 = '\x1b[35m';
+            gradecolor2P5 = '\x1b[35m';
         }
         if (value[29] < 70){
-            gradecolorP6 = '\x1b[35m';
+            gradecolor2P6 = '\x1b[35m';
         }
 
         if (value[24] < 60){
-            gradecolorP1 = '\x1b[31m';
+            gradecolor2P1 = '\x1b[31m';
         }
         if (value[25] < 60){
-            gradecolorP2 = '\x1b[31m';
+            gradecolor2P2 = '\x1b[31m';
         }
         if (value[26] < 60){
-            gradecolorP3 = '\x1b[31m';
+            gradecolor2P3 = '\x1b[31m';
         }
         if (value[27] < 60){
-            gradecolorP4 = '\x1b[31m';
+            gradecolor2P4 = '\x1b[31m';
         }
         if (value[28] < 60){
-            gradecolorP5 = '\x1b[31m';
+            gradecolor2P5 = '\x1b[31m';
         }
         if (value[29] < 60){
-            gradecolorP6 = '\x1b[31m';
+            gradecolor2P6 = '\x1b[31m';
         }
 
         // set up tables
@@ -462,12 +474,12 @@ function check(username, password) {
         );
         // push tables for 1st semster
         gradestable2.push(
-            { 'Period 1': [value[36] ,gradecolorP1 + value[24], gradecolorP1 + value[30]]}
-          , { 'Period 2': [value[37] ,gradecolorP2 + value[25], gradecolorP2 + value[31]]}
-          , { 'Period 3': [value[38] ,gradecolorP3 + value[26], gradecolorP3 + value[32]]}
-          , { 'Period 4': [value[39] ,gradecolorP4 + value[27], gradecolorP4 + value[33]]}
-          , { 'Period 5': [value[40] ,gradecolorP5 + value[28], gradecolorP5 + value[34]]}
-          , { 'Period 6': [value[41] ,gradecolorP6 + value[29], gradecolorP6 + value[35]]}
+            { 'Period 1': [value[36] ,gradecolorP1 + value[24], gradecolor2P1 + value[30]]}
+          , { 'Period 2': [value[37] ,gradecolorP2 + value[25], gradecolor2P2 + value[31]]}
+          , { 'Period 3': [value[38] ,gradecolorP3 + value[26], gradecolor2P3 + value[32]]}
+          , { 'Period 4': [value[39] ,gradecolorP4 + value[27], gradecolor2P4 + value[33]]}
+          , { 'Period 5': [value[40] ,gradecolorP5 + value[28], gradecolor2P5 + value[34]]}
+          , { 'Period 6': [value[41] ,gradecolorP6 + value[29], gradecolor2P6 + value[35]]}
         );
 
         emailtable2.push(
@@ -550,6 +562,7 @@ function check(username, password) {
                 global.p4 = value[27];
                 global.p5 = value[28];
                 global.p6 = value[29];
+                global.semester = '1';
             } else {
                 if (now.toString().includes('Jan') && day >= 30) {
                     //set grades in global variable
@@ -559,6 +572,7 @@ function check(username, password) {
                     global.p4 = value[3];
                     global.p5 = value[4];
                     global.p6 = value[5];
+                    global.semester = '2';
                 } else {
                     if (now.toString().includes('Feb') || now.toString().includes('Mar') || now.toString().includes('Apr') || now.toString().includes('May')) {
                         //set grades in global variable
@@ -568,6 +582,7 @@ function check(username, password) {
                         global.p4 = value[3];
                         global.p5 = value[4];
                         global.p6 = value[5];
+                        global.semester = '2';
                         
                     } else {
                     }
@@ -621,6 +636,7 @@ function check(username, password) {
                 global.p4 = value[27];
                 global.p5 = value[28];
                 global.p6 = value[29];
+                global.semester = '1';
             } else {
                 if (now.toString().includes('Jan') && day >= 30) {
                     console.log('\n\n2nd Semester Grades:'.bold);
@@ -632,6 +648,7 @@ function check(username, password) {
                     global.p4 = value[3];
                     global.p5 = value[4];
                     global.p6 = value[5];
+                    global.semester = '2';
                 } else {
                     if (now.toString().includes('Feb') || now.toString().includes('Mar') || now.toString().includes('Apr') || now.toString().includes('May')) {
                         console.log('\n\n2nd Semester Grades:'.bold);
@@ -643,6 +660,7 @@ function check(username, password) {
                         global.p4 = value[3];
                         global.p5 = value[4];
                         global.p6 = value[5];
+                        global.semester = '2';
                         
                     } else {
                             console.log('\n\nIts summer! Yay! :)'.magenta);
@@ -783,7 +801,6 @@ function check(username, password) {
                 setTimeout(auto, 1800000);
             }
         }
-    
 
     }).catch(error => { 
         // console.log('ERROR'.bgRed, error.message); 
