@@ -1,0 +1,557 @@
+/* Fonts */
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans+Condensed');
+
+* {
+    box-sizing: border-box;
+}
+
+/* Styles */
+h1 {
+    font-size: 50px;
+    color:#adadad;
+}
+
+h2 {
+    font-size: 34px;
+    color:#adadad;
+}
+
+h3 {
+    font-size: 18px;
+    color:#adadad;
+}
+
+p {
+    color:#adadad;
+}
+
+@media only screen and (max-width: 750px) {
+    h1 { 
+       font-size: 3.5em; 
+    }
+ }
+
+ @media only screen and (max-width: 550px) {
+    h1 { 
+       font-size: 2.5em; 
+    }
+ }
+
+
+a {
+    color: #4286f4;
+    text-decoration: none;
+    font-size: 1em;
+    font-family: 'IBM Plex Sans Condensed', sans-serif;
+    transition: 0.4s;
+    -webkit-app-region: no-drag;
+}
+
+a:hover {
+    color: #6ca4ff;
+    font-size: 1.04em;
+    transition: 0.2s;
+}
+
+body {
+
+    background-color: #474747;
+    width: 100%;
+    margin: 0;
+    color:#adadad;
+
+}
+
+/* Classes */
+.sp-wrapper {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.sp-page {
+    padding-top:100px;
+    text-align:left;
+    font-family: 'IBM Plex Sans Condensed', sans-serif;
+    color:#4c4b4b;
+    width: 55vw;
+    margin: auto;
+
+}
+
+.sp-btn {
+    background-color: #e8e8e8;
+    color: #4c4b4b;
+    font-size: 25px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 35px;
+    padding-right: 35px;
+    border: none;
+    font-family: 'IBM Plex Sans Condensed', sans-serif;
+    transition: 0.2s;
+    border-radius: 2px;
+}
+
+.sp-btn:hover {
+    background-color: #f0f0f0;
+    transition: 0.2s;
+    box-shadow: 10px 0px 0px #adadad;
+}
+
+.sp-btn:active {
+    background-color: #f4f4f4;
+    transform: translateX(-10px);
+    transition: 0.1s;
+}
+
+
+.sp-btn-primary {
+    background-color: #8685dd;
+    color: #f2f2f2;
+    font-size: 25px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 35px;
+    padding-right: 35px;
+    border: none;
+    font-family: 'IBM Plex Sans Condensed', sans-serif;
+    transition: 0.2s;
+    border-radius: 2px;
+}
+
+.sp-btn-primary:hover {
+    background-color: #8e8de9;
+    transition: 0.2s;
+    box-shadow: 10px 0px 0px #8062c5;
+}
+
+.sp-btn-primary:active {
+    background-color: #9b9aff;
+    transform: translateX(-10px);
+    transition: 0.1s;
+}
+
+
+.sp-btn-bad {
+    background-color: #dd8585;
+    color: #f2f2f2;
+    font-size: 25px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 35px;
+    padding-right: 35px;
+    border: none;
+    font-family: 'IBM Plex Sans Condensed', sans-serif;
+    transition: 0.2s;
+    border-radius: 2px;
+}
+
+.sp-btn-bad:hover {
+    background-color: #e98d8d;
+    transition: 0.2s;
+    box-shadow: 10px 0px 0px #c56262;
+}
+
+.sp-btn-bad:active {
+    background-color: #ff9a9a;
+    transform: translateX(-10px);
+    transition: 0.1s;
+}
+
+
+.sp-btn-good {
+    background-color: #85dd85;
+    color: #f2f2f2;
+    font-size: 25px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 35px;
+    padding-right: 35px;
+    border: none;
+    font-family: 'IBM Plex Sans Condensed', sans-serif;
+    transition: 0.2s;
+    border-radius: 2px;
+}
+
+.sp-btn-good:hover {
+    background-color: #90e98d;
+    transition: 0.2s;
+    box-shadow: 10px 0px 0px #65c562;
+}
+
+.sp-btn-good:active {
+    background-color: #9aff9a;
+    transform: translateX(-10px);
+    transition: 0.1s;
+}
+
+.sp-btn-s {
+    background-color: #e8e8e8;
+    color: #4c4b4b;
+    font-size: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border: none;
+    font-family: 'IBM Plex Sans Condensed', sans-serif;
+    transition: 0.2s;
+    border-radius: 2px;
+}
+
+.sp-btn-s:hover {
+    background-color: #f0f0f0;
+    transition: 0.2s;
+    box-shadow: 0px 5px 0px #adadad;
+}
+
+.sp-btn-s:active {
+    background-color: #f4f4f4;
+    transform: translateY(-5px);
+    transition: 0.1s;
+    box-shadow: 0px 0px 0px #adadad;
+}
+
+
+.sp-btn-primary-s {
+    background-color: #8685dd;
+    color: #f2f2f2;
+    font-size: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border: none;
+    font-family: 'IBM Plex Sans Condensed', sans-serif;
+    transition: 0.2s;
+    border-radius: 2px;
+}
+
+.sp-btn-primary-s:hover {
+    background-color: #8e8de9;
+    transition: 0.2s;
+    box-shadow: 0px 5px 0px #8062c5;
+}
+
+.sp-btn-primary-s:active {
+    background-color: #9b9aff;
+    transform: translateY(-5px);
+    transition: 0.1s;
+    box-shadow: 0px 0px 0px #8062c5;
+}
+
+
+.sp-btn-bad-s {
+    background-color: #dd8585;
+    color: #f2f2f2;
+    font-size: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border: none;
+    font-family: 'IBM Plex Sans Condensed', sans-serif;
+    transition: 0.2s;
+    border-radius: 2px;
+}
+
+.sp-btn-bad-s:hover {
+    background-color: #e98d8d;
+    transition: 0.2s;
+    box-shadow: 0px 5px 0px #c56262;
+}
+
+.sp-btn-bad-s:active {
+    background-color: #ff9a9a;
+    transform: translateY(-5px);
+    transition: 0.1s;
+    box-shadow: 0px 0px 0px #c56262;
+}
+
+
+.sp-btn-good-s {
+    background-color: #85dd85;
+    color: #f2f2f2;
+    font-size: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border: none;
+    font-family: 'IBM Plex Sans Condensed', sans-serif;
+    transition: 0.2s;
+    border-radius: 2px;
+}
+
+.sp-btn-good-s:hover {
+    background-color: #90e98d;
+    transition: 0.2s;
+    box-shadow: 0px 5px 0px #65c562;
+}
+
+.sp-btn-good-s:active {
+    background-color: #9aff9a;
+    transform: translateY(-5px);
+    transition: 0.1s;
+    box-shadow: 0px 0px 0px #65c562;
+}
+
+/* Navigation */
+ul.sidenav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 15%;
+    background-color: #e8e8e8;
+    position: fixed;
+    height: 100%;
+    overflow: visible;
+    color: #4c4b4b;
+    font-family: 'IBM Plex Sans Condensed', sans-serif;
+    text-align: center;
+}
+
+ul.sidenav li a {
+    display: block;
+    color: #4c4b4b;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 2px;
+    text-align: left;
+}
+ 
+ul.sidenav li a.active {
+    background-color: #8685dd;
+    color: #e8e8e8;
+    border-radius: 2px;
+}
+
+ul.sidenav li a:hover:not(.active) {
+    background-color: #f0f0f0;
+    color: #4c4b4b;
+    border-radius: 2px;
+    transition: 0.2s;
+    box-shadow: 10px 0px 0px #8062c5;
+}
+
+div.content {
+    margin-left: 25%;
+    padding: 1px 16px;
+    height: 1000px;
+}
+
+@media screen and (max-width: 900px) {
+    ul.sidenav {
+        width: 100%;
+        height: auto;
+    }
+    ul.sidenav li a {
+        float: left;
+        padding: 15px;
+        background-color: #e8e8e8;
+    }
+    div.content {margin-left: 0;}
+
+    ul.sidenav li a:hover:not(.active) {
+        box-shadow: 0px 10px 0px #8062c5;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    ul.sidenav {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+    ul.sidenav li a {
+        text-align: center;
+        float: none;
+
+    }
+    ul.sidenav li a:hover:not(.active) {
+        box-shadow: 0px 0px 0px #8062c5;
+    }
+}
+
+/* HTML Forms */
+input[type=text], select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    resize: vertical;
+    color: #4c4b4b;
+}
+
+label {
+    padding: 12px 12px 12px 0;
+    display: inline-block;
+}
+
+.sp-container {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 50px;
+}
+
+.col-25 {
+    float: left;
+    width: 25%;
+    margin-top: 6px;
+}
+
+.col-75 {
+    float: left;
+    width: 75%;
+    margin-top: 6px;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+@media screen and (max-width: 600px) {
+    .col-25, .col-75, input[type=submit] {
+        width: 100%;
+        margin-top: 0;
+    }
+}
+
+.sp-form-btn {
+    background-color: #8685dd;
+    color: #f2f2f2;
+    font-size: 15px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 85px;
+    padding-right: 15px;
+    border: none;
+    font-family: 'IBM Plex Sans Condensed', sans-serif;
+    transition: 0.2s;
+    border-radius: 2px;
+    float: right;
+    margin-top: 12px;
+    cursor: pointer;
+}
+
+.sp-form-btn:hover {
+    background-color: #8e8de9;
+    transition: 0.2s;
+    box-shadow: 0px 5px 0px #8062c5;
+}
+
+.sp-form-btn:active {
+    background-color: #9b9aff;
+    transform: translateY(-5px);
+    transition: 0.1s;
+    box-shadow: 0px 0px 0px #8062c5;
+}
+
+/* Style the header */
+.header {
+    background-color: rgb(87, 87, 87);
+    padding: 10px;
+    text-align: center;
+    font-family: 'IBM Plex Sans Condensed', sans-serif;
+    color: #c5c5c5;
+}
+
+ /* Add a black background color to the top navigation */
+ .topnav {
+    background-color: #333;
+    overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 6px 20px;
+    text-decoration: none;
+    font-size: 12px;
+    -webkit-app-region: no-drag;
+}
+
+.topnav-right {
+    float: right;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+    background-color: #ddd;
+    color: #333;
+}
+
+/* Add an active class to highlight the current page */
+.active {
+    background-color: rgb(76, 122, 175);
+    color: #ddd;
+}
+
+/* Hide the link that should open and close the topnav on small screens */
+.topnav .icon {
+    display: none;
+} 
+
+/* Create three equal columns that floats next to each other */
+.column {
+    float: left;
+    width: 33.33%;
+    padding: 15px;
+    text-align: center;
+    font-family: 'IBM Plex Sans Condensed', sans-serif;
+    color: #4c4b4b;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+@media screen and (max-width:600px) {
+    .column {
+        width: 100%;
+    }
+}
+
+.minmax {
+    background-color: #a0a0a0;
+    color: #4c4b4b;
+    font-size: 15px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 85px;
+    padding-right: 15px;
+    border: none;
+    font-family: 'Quicksand', sans-serif;
+    transition: 0.2s;
+    float: right;
+    cursor: pointer;
+
+}
+.close {
+    background-color: #fc6565;
+    color: #4c4b4b;
+    font-size: 15px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 85px;
+    padding-right: 15px;
+    border: none;
+    font-family: 'Quicksand', sans-serif;
+    transition: 0.2s;
+    float: right;
+    cursor: pointer;
+
+}
+
+
+
