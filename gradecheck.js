@@ -27,23 +27,46 @@ function check(username, password) {
   const originOptions = {
     // method: 'POST',
     uri: 'https://ps.seattleschools.org/public/home.html',
-    headers: { 'User-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3180.0 Safari/537.36'},
+    headers: {
+      'User-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3180.0 Safari/537.36'
+    },
     transform: function (body) {
-      // console.log(body);
       return cheerio.load(body);
     },
-    simple: false, 
+    simple: false,
     resolveWithFullResponse: true,
     jar: cookiejar
   };
+
+  function redirectOn302(body, response, resolveWithFullResponse) {
+    if (response.statusCode === 302) {
+      // Set the new url (this is the options object)
+      originOptions.url = 'https://PS.SeattleSchools.org/guardian/home.html';
+      return rp(originOptions);
+    } else {
+      return resolveWithFullResponse ? response : body;
+    }
+  }
 
   rp(originOptions)
     .then(($) => {
       var gradeOptions = {
         method: 'POST',
         uri: 'https://ps.seattleschools.org/guardian/home.html',
-        headers: { 'Host': 'ps.seattleschools.org', 'Connection': 'keep-alive', 'Content-Length': 448, 'Cache-Control': 'max-age=0', 'Origin': 'https://ps.seattleschools.org/public/home.html', 'Upgrade-Insecure-Requests': 1, 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3251.0 Safari/537.36', 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8', 'Referer': 'https://ps.seattleschools.org/public/home.html', 'Accept-Encoding': 'gzip, deflate, br', 'Accept-Language': 'en-US,en;q=0.9', },
-        body: {
+        headers: {
+          'Host': 'ps.seattleschools.org',
+          'Connection': 'keep-alive',
+          'Content-Length': 444,
+          'Cache-Control': 'max-age=0',
+          'Origin': 'https://ps.seattleschools.org',
+          'Upgrade-Insecure-Requests': 1,
+          'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3251.0 Safari/537.36',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+          'Referer': 'https://ps.seattleschools.org/public/home.html',
+          'Accept-Encoding': 'gzip, deflate, br',
+          'Accept-Language': 'en-US,en;q=0.9',
+        },
+        form: {
           pstoken: '',
           contextData: '',
           dbpw: '',
@@ -56,35 +79,47 @@ function check(username, password) {
           pcasServerUrl: '/',
           credentialType: 'User Id and Password Credential',
           ldappassword: '',
-          Account: '',
-          pw: '9a135bc413b98ae45e304f991a500649',
-          translatorpw:''
+          account: '',
+          pw: '',
+          translatorpw: ''
         },
-        // transform: function (res) {
-        //   // return cheerio.load(res);
-        // },
+        transform: redirectOn302,
         json: true,
-        jar: $.jar,
-        simple: false, 
+        jar: originOptions.jar,
+        simple: false,
         resolveWithFullResponse: true
       };
 
       console.log('Bypassing SPS Security Systems...');
 
       // SPS "Security mesaures"
-      gradeOptions.body.pstoken = $('body').find('#LoginForm').children().attr('name', 'pstoken').val(); // Power School token!!!
-      gradeOptions.body.contextData = $('body').find('#LoginForm').children().attr('name', 'contextData').val(); // ContextData
-      gradeOptions.body.dbpw = $('body').find('#LoginForm').children().attr('name', 'dbpw').val(); // database password? What?
-      gradeOptions.body.pcasServerUrl = '/'; // Always '/'
+      formValues = []
 
-      gradeOptions.body.Account = username;
-      gradeOptions.body.ldappassword = password;
+      $('body').find('#LoginForm').children().each(function (i, elem) {
+        formValues[i] = $(this).val();
+      })
+
+      gradeOptions.form.pstoken = formValues[0]
+
+      gradeOptions.form.contextData = formValues[1]
+
+      gradeOptions.form.dbpw = formValues[2]
+
+      gradeOptions.form.pcasServerUrl = '/'; // Always '/'
+
+      gradeOptions.form.account = username;
+      gradeOptions.form.ldappassword = password;
       // Assign username/password from our app
 
       console.log('HASHING PASSWORD to match RSA Standard.');
-      require('./md5').encrypt(gradeOptions.body, afterEncrypt);
+      require('./md5').doPCASLogin(gradeOptions.form, formValues[1]);
 
-      function afterEncrypt(){
+      gradeOptions.form.ldappassword = password;
+      // Assign username/password from our app
+
+      afterEncrypt();
+
+      function afterEncrypt() {
         console.log('Decrypting PowerSchool API Token.');
         getGrades(gradeOptions);
       }
@@ -100,15 +135,15 @@ function check(username, password) {
 function getGrades(options) {
   rp(options)
     .then(($) => {
-    console.log($);
-    // console.log($.read());
-    console.log('Access Granted.'.bgGreen);
+      console.log($);
+      // console.log($.read());
+      console.log('Access Granted.'.bgGreen);
 
-  }).catch((err) => {
-    console.log(err);
-    console.error('Access Denied.'.bgRed);
+    }).catch((err) => {
+      console.log(err);
+      console.error('Access Denied.'.bgRed);
 
-  });
+    });
 }
 
 
