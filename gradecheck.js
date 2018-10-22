@@ -31,6 +31,7 @@ function check(username, password) {
       'User-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3180.0 Safari/537.36'
     },
     transform: function (body) {
+      console.log(body);
       return cheerio.load(body);
     },
     simple: false,
