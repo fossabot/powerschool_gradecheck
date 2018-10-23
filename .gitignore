@@ -57,3 +57,4 @@ typings/
 # dotenv environment variables file
 .env
 
+SPSGradecheckApp/MobileGrades/android/gradle.properties
