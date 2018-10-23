@@ -131,8 +131,9 @@ export default class App extends Component<Props> {
         })
         console.log(table[3]);
 
-        SemesterGrades = table.map((grade) => <View key={grade[0]} style={styles.gradeView}><Card><Text style={styles.gradeViewText}>{grade[0]}</Text></Card></View>)
+        SemesterGrades = table.map((grade, i) => <View key={grade[0]} style={styles.gradeView}><Card><Text style={styles.gradeViewText}>Period {i-2}: {grade[0]}</Text></Card></View>)
         SemesterGrades.splice(0 , 3)
+        SemesterGrades = SemesterGrades.splice(0 , 6)
 
 
         // Turn off spinner
@@ -179,6 +180,7 @@ export default class App extends Component<Props> {
           <Text>Created by Nathan Laha</Text>
         </View>
         <View style={styles.pageStyle} key="2">
+          <Text style={styles.title}>Semester Grades</Text>
           {SemesterGrades}
           <View>
             <Text>If data is not up to date, please log in again.</Text>
@@ -200,11 +202,12 @@ const styles = StyleSheet.create({
   },
   gradeView: {
     fontSize: 20,
-    padding: 20,
+    paddingHorizontal: 20,
   },
   gradeViewText: {
     fontSize: 20,
     padding: 20,
+    paddingHorizontal: 50,
   },
   spinnerTextStyle: {
     color: '#FFF'
@@ -214,7 +217,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
   },
   title: {
-    fontSize: 40,
+    fontSize: 35,
     marginTop: 62,
     textAlign: 'center',
     margin: 10,
