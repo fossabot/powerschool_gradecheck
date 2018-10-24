@@ -1,5 +1,5 @@
 {
-  "name": "MobileGrades",
+  "name": "mobilegrades",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -8,6 +8,7 @@
     "android-linux": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && react-native run-android"
   },
   "dependencies": {
+    "@expo/vector-icons": "^8.0.0",
     "cheerio-without-node-native": "^0.20.2",
     "events": "^3.0.0",
     "react": "16.6.0-alpha.8af6728",

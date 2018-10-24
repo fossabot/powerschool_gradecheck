@@ -6,13 +6,14 @@
  * @flow
  */
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Alert, Navigator, NativeModules, ViewPagerAndroid} from 'react-native';
-import { Button, COLOR, ThemeContext, getTheme, Card } from 'react-native-material-ui';
+import {Platform, StyleSheet, Text, View, Alert, Navigator, NativeModules, ViewPagerAndroid, ActivityIndicator, ScrollView} from 'react-native';
+import { createSwitchNavigator, createStackNavigator, createDrawerNavigator} from 'react-navigation';
+import { Button, COLOR, ThemeContext, getTheme, Card, Toolbar, Drawer, Avatar } from 'react-native-material-ui';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { TextField } from 'react-native-material-textfield';
-import Spinner from 'react-native-loading-spinner-overlay';
 import cheerio from 'cheerio-without-node-native';
 import md5 from './md5.js';
+
 
 const uiTheme = {
   palette: {
@@ -27,26 +28,21 @@ const uiTheme = {
 
 var username = '';
 var password = '';
-var loginpage = '';
-var isLoading = false;
-var SemesterGrades;
+var Grades = {
+  Semester: [],
+};
 
 type Props = {};
 
-export default class App extends Component<Props> {
-  state = {
-    spinner: false
-  };
+// Sign in page
+export class SignInScreen extends React.Component {
+  static navigationOptions = { title: 'Logout', header: null };
   login() {
-    // Turn on spinner
-    this.setState({
-      spinner: !this.state.spinner
-    });
-  
+    this.props.navigation.navigate('AuthLoading');
     // Get login page
     fetch('https://ps.seattleschools.org/public/home.html', {
       credentials: "same-origin"
-  
+    
     })
     .then((response) => response.text())
     .then((responseHTML) => {
@@ -101,12 +97,25 @@ export default class App extends Component<Props> {
       .then((response1) => response1.text())
       .then((responseHTML1) => {
         const $ = cheerio.load(responseHTML1); 
+        
+        var table = [];
+        var tableLetter = []; 
+        var tableLetter2 = []; 
 
-        var table = []; 
+        tablechildren = [];
+        $('#tblgrades').children().map(function(i, e) {
+          tablechildren.push($(this).find('td:nth-child(12)').text())
+        })
+        console.log('Table Children', tablechildren[3])
+
         $('body').find('#tblgrades').children().map(function(i, e) {
-              table[i] = $(this).find('.bold').text();
+              table[i] = $(this).find('.bold').text()
+              tableLetter[i] = $(this).find('.bold').text();
+              tableLetter2[i] = $(this).find('.bold').text();
               try {
                 table[i] = table[i].match(/\d+/g).map(Number);
+                tableLetter[i] = tableLetter[i].map(String)
+                tableLetter2[i] = tableLetter2[i].map(String)
 
                 var uniqueLetters = [];
                 var nonUniqueLetters = [];
@@ -129,17 +138,43 @@ export default class App extends Component<Props> {
 
               }
         })
-        console.log(table[3]);
 
-        SemesterGrades = table.map((grade, i) => <View key={grade[0]} style={styles.gradeView}><Card><Text style={styles.gradeViewText}>Period {i-2}: {grade[0]}</Text></Card></View>)
-        SemesterGrades.splice(0 , 3)
-        SemesterGrades = SemesterGrades.splice(0 , 6)
+        tableLetter2 = tableLetter2.splice(9, 15);
 
-
-        // Turn off spinner
-        this.setState({
-          spinner: !this.state.spinner
+        Grades.Semester = table.map((grade, i) => {
+          if (tableLetter === undefined && tableLetter2 === undefined) {
+            return (<View key={grade[0]} style={styles.gradeView}><Card><Text styl={styles.gradeViewText}>Couldn't get grades! Please try logging in again</Text></Card></View>);
+          }
+          if (tableLetter2[i] === undefined) {
+            tableLetter2[i] = 'n/a'
+          }
+          var colorMyGrades = {
+            color: '#70FE70'
+          }
+          if (grade[0] > 89) {
+            console.log(89)
+            colorMyGrades.color = '#70FE70'
+          } else if (grade[0] > 79 && grade[0] < 90) {
+            console.log(79)
+            colorMyGrades.color = '#70C1FE'
+          } else if (grade[0] > 69 && grade[0] < 80) {
+            console.log(69)
+            colorMyGrades.color = '#DFAF2A'
+          } else if (grade[0] > 59 && grade[0] < 70) {
+            console.log(59)
+            colorMyGrades.color = '#FE7701'
+          } else if (grade[0] > 49 && grade[0] < 60) {
+            console.log(49)
+            colorMyGrades.color = '#FE0101'
+          }
+          return (<View key={grade[0]} style={styles.gradeView}><Card><View style={styles.gradeClassView}><Text styl={styles.classText}>{i-2}. {tablechildren[i]}</Text></View><Text style={[styles.gradeViewText]}>1st Semester: </Text><Text style={[styles.gradeViewText, colorMyGrades]}>{tableLetter[i]}</Text><Text style={[styles.gradeViewText]}>2nd Semester: </Text><Text style={[styles.gradeViewText, colorMyGrades]}>{tableLetter2[i]}</Text></Card></View>);
         });
+        Grades.Semester.splice(0 , 3)
+        Grades.Semester = Grades.Semester.splice(0 , 6)
+
+        // Navigate to Home page
+        this.props.navigation.navigate('App');
+
       }).catch((error) =>{
         console.error(error);
       });
@@ -152,10 +187,6 @@ export default class App extends Component<Props> {
   render() {
     return (
       <ThemeContext.Provider value={getTheme(uiTheme)}>
-      <ViewPagerAndroid
-        style={styles.viewPager}
-        initialPage={0}>
-        <View style={styles.pageStyle} key="1">
         <View style={styles.container}>
           <Text style={styles.title}>Mobile Grades</Text>
           <View style={styles.contentContainer}>
@@ -165,32 +196,88 @@ export default class App extends Component<Props> {
               onChangeText={ (us) => {username = us; }}
             />
             <TextField
+              secureTextEntry={true} 
               label='SPS Password'
               value=''
               onChangeText={ (pw) => {password = pw; }}
             />
             <Button style={{ container: { height: 40, borderRadius: 85, marginTop: 30 }, text: { fontSize: 20 } }} raised primary text="Login" onPress={this.login.bind(this)} />
-            <Spinner
-            visible={this.state.spinner}
-            textContent={'Logging in...'}
-            textStyle={styles.spinnerTextStyle}
-            />
           </View>
         </View>
-          <Text>Created by Nathan Laha</Text>
-        </View>
-        <View style={styles.pageStyle} key="2">
-          <Text style={styles.title}>Semester Grades</Text>
-          {SemesterGrades}
-          <View>
-            <Text>If data is not up to date, please log in again.</Text>
-          </View>
-        </View>
-      </ViewPagerAndroid>
       </ThemeContext.Provider>
     );
   }
 }
+
+// Loading screen between Auth page and Home Page
+export class AuthLoadingScreen extends React.Component {
+  static navigationOptions = { 
+    drawerLabel: 'Grades',
+    drawerIcon: ({ tintColor }) => (
+      <Icon name="person"/>
+    ),
+  };
+  render() {
+    return (
+      <ThemeContext.Provider value={getTheme(uiTheme)}>
+        <View style={styles.container}>
+          <Text style={styles.title}>Logging in...</Text>
+          <View style={styles.contentContainer}>
+            <ActivityIndicator size="large" />
+          </View>
+        </View>
+      </ThemeContext.Provider>
+    )
+  }
+}
+
+// First page the user sees when logged in
+export class HomeScreen extends React.Component {
+  static navigationOptions = { title: 'Grades', header: null };
+  render() {
+    return (
+      <ThemeContext.Provider value={getTheme(uiTheme)}>
+          <Toolbar
+            centerElement="Grades"
+            leftElement="menu"
+            onLeftElementPress={() => this.props.navigation.toggleDrawer()}
+          />
+        <ScrollView>
+          <View style={styles.container}>
+                {Grades.Semester}
+          </View>
+        </ScrollView>
+      </ThemeContext.Provider>
+    )
+  }
+}
+
+const AppStack = createDrawerNavigator({
+   Home: {
+     screen: HomeScreen
+    }, 
+   SignIn: {
+     screen: SignInScreen
+    },
+}, 
+{
+  cardStyle: { backgroundColor: '#F5FCFF' },
+},);
+const AuthStack = createStackNavigator({ SignIn: SignInScreen }, {
+  headerMode: 'screen',
+  cardStyle: { backgroundColor: '#F5FCFF' },
+},);
+
+export default createSwitchNavigator(
+  {
+    AuthLoading: AuthLoadingScreen,
+    App: AppStack,
+    Auth: AuthStack,
+  },
+  {
+    initialRouteName: 'Auth',
+  },
+);
 
 const styles = StyleSheet.create({
   viewPager: {
@@ -200,21 +287,32 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
   },
+  gradeClassView: { 
+    padding: 20,
+  },
   gradeView: {
     fontSize: 20,
-    paddingHorizontal: 20,
+    padding: 10,
+    paddingHorizontal: 10,
+  },
+  classText: {
+    fontSize: 10,
+    padding: 30,
   },
   gradeViewText: {
     fontSize: 20,
-    padding: 20,
-    paddingHorizontal: 50,
+    padding: 10,
   },
-  spinnerTextStyle: {
-    color: '#FFF'
+  navDrawer: {
+    position: "absolute",
+    left: 0,
+    width: '80%',
   },
   container: {
     justifyContent: 'center',
     backgroundColor: '#F5FCFF',
+    paddingHorizontal: 20,
+    marginTop: 35,
   },
   title: {
     fontSize: 35,
