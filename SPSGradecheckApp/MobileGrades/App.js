@@ -8,11 +8,12 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Alert, Navigator, NativeModules, ViewPagerAndroid, ActivityIndicator, ScrollView} from 'react-native';
 import { createSwitchNavigator, createStackNavigator, createDrawerNavigator} from 'react-navigation';
-import { Button, COLOR, ThemeContext, getTheme, Card, Toolbar, Drawer, Avatar } from 'react-native-material-ui';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { Button, COLOR, ThemeContext, getTheme, Card, Toolbar, Drawer, Avatar, Icon, Dialog, DialogDefaultActions, ActionButton, Checkbox } from 'react-native-material-ui';
 import { TextField } from 'react-native-material-textfield';
 import cheerio from 'cheerio-without-node-native';
 import md5 from './md5.js';
+import * as Keychain from 'react-native-keychain';
+import TouchID from 'react-native-touch-id';
 
 
 const uiTheme = {
@@ -31,13 +32,49 @@ var password = '';
 var Grades = {
   Semester: [],
 };
+var savecred = true;
+var hascreds = false;
 
 type Props = {};
 
 // Sign in page
 export class SignInScreen extends React.Component {
   static navigationOptions = { title: 'Logout', header: null };
+  loginBiomectrics() {
+    TouchID.isSupported()
+    .then(biometryType => {
+      TouchID.authenticate('Authenticate with fingerprint') // Show the Touch ID prompt
+      .then(async (success) => {
+        // Touch ID authentication was successful!
+        // Handle the successs case now
+        // Retreive the credentials
+        try {
+          const credentials = await Keychain.getGenericPassword();
+          if (credentials) {
+            username = credentials.username;
+            password = credentials.password;
+            this.login();
+          }
+        } catch (error) {
+
+        }
+      })
+      .catch(error => {
+        // Touch ID Authentication failed (or there was an error)!
+        // Also triggered if the user cancels the Touch ID prompt
+        // On iOS and some Android versions, `error.message` will tell you what went wrong
+      });
+    })
+    .catch(error => {
+      // User's device does not support Touch ID (or Face ID)
+      // This case is also triggered if users have not enabled Touch ID on their device
+    });
+  }
   login() {
+    if (savecred == true) {
+      Keychain.setGenericPassword(username, password);
+      hascreds = true;
+    }
     this.props.navigation.navigate('AuthLoading');
     // Get login page
     fetch('https://ps.seattleschools.org/public/home.html', {
@@ -46,7 +83,7 @@ export class SignInScreen extends React.Component {
     })
     .then((response) => response.text())
     .then((responseHTML) => {
-  
+      
       const $ = cheerio.load(responseHTML); 
 
       var formValues = [];
@@ -183,6 +220,7 @@ export class SignInScreen extends React.Component {
     .catch((error) =>{
       console.error(error);
     });
+
   }
   render() {
     return (
@@ -201,7 +239,8 @@ export class SignInScreen extends React.Component {
               value=''
               onChangeText={ (pw) => {password = pw; }}
             />
-            <Button style={{ container: { height: 40, borderRadius: 85, marginTop: 30 }, text: { fontSize: 20 } }} raised primary text="Login" onPress={this.login.bind(this)} />
+            <Button style={{ container: { width: '100%', height: 55, borderRadius: 85, marginTop: 30 }, text: { fontSize: 18 } }} raised primary text="Login" onPress={this.login.bind(this)} />
+            <Button disabled={!hascreds} style={{ container: { backgroundColor: '#47ba24', width: '100%', height: 55, borderRadius: 85, marginTop: 30 }, text: { fontSize: 18 } }} icon="fingerprint" raised primary text="Fingerprint" onPress={this.loginBiomectrics.bind(this)} />
           </View>
         </View>
       </ThemeContext.Provider>
@@ -280,6 +319,15 @@ export default createSwitchNavigator(
 );
 
 const styles = StyleSheet.create({
+  dcontainer: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
+  loginContainer: {
+    flex: 1,
+    flexDirection: 'row',
+  },
   viewPager: {
     flex: 1
   },

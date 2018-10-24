@@ -54,6 +54,8 @@
 		7FDC3C88BFC948F8973F4513 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 533A46C9F6A6422E9E87DE81 /* Octicons.ttf */; };
 		73048C3E3C2042248B6C94D5 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 081B7B9204654148BC02CA1D /* SimpleLineIcons.ttf */; };
 		C3A711DA1DDC4118A8BD9911 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9277D2A678E341CA8E769DF3 /* Zocial.ttf */; };
+		12365A47BDF44EB19782997A /* libRNKeychain.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7240714C006141D7BFD8B426 /* libRNKeychain.a */; };
+		E3E016F5E93148C98BD266E9 /* libTouchID.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F21F6D90C2F44259BE71F968 /* libTouchID.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -377,6 +379,10 @@
 		533A46C9F6A6422E9E87DE81 /* Octicons.ttf */ = {isa = PBXFileReference; name = "Octicons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		081B7B9204654148BC02CA1D /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; name = "SimpleLineIcons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		9277D2A678E341CA8E769DF3 /* Zocial.ttf */ = {isa = PBXFileReference; name = "Zocial.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		D9B7907FFAF045F9AB12C09E /* RNKeychain.xcodeproj */ = {isa = PBXFileReference; name = "RNKeychain.xcodeproj"; path = "../node_modules/react-native-keychain/RNKeychain.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		7240714C006141D7BFD8B426 /* libRNKeychain.a */ = {isa = PBXFileReference; name = "libRNKeychain.a"; path = "libRNKeychain.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		C4A7028E31904B7CAA709A5C /* TouchID.xcodeproj */ = {isa = PBXFileReference; name = "TouchID.xcodeproj"; path = "../node_modules/react-native-touch-id/TouchID.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		F21F6D90C2F44259BE71F968 /* libTouchID.a */ = {isa = PBXFileReference; name = "libTouchID.a"; path = "libTouchID.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -405,6 +411,8 @@
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				5A4E7B7EA4FC4CEE8F46948A /* libRNVectorIcons.a in Frameworks */,
+				12365A47BDF44EB19782997A /* libRNKeychain.a in Frameworks */,
+				E3E016F5E93148C98BD266E9 /* libTouchID.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -593,6 +601,8 @@
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				E485F649ABDC445EA555FD4C /* RNVectorIcons.xcodeproj */,
+				D9B7907FFAF045F9AB12C09E /* RNKeychain.xcodeproj */,
+				C4A7028E31904B7CAA709A5C /* TouchID.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1261,10 +1271,14 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
+					"$(SRCROOT)\..\node_modules\react-native-keychain\RNKeychainManager",
+					"$(SRCROOT)\..\node_modules\react-native-touch-id",
 				);
 			};
 			name = Debug;
@@ -1288,10 +1302,14 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
+					"$(SRCROOT)\..\node_modules\react-native-keychain\RNKeychainManager",
+					"$(SRCROOT)\..\node_modules\react-native-touch-id",
 				);
 			};
 			name = Release;
@@ -1315,6 +1333,8 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
+					"$(SRCROOT)\..\node_modules\react-native-keychain\RNKeychainManager",
+					"$(SRCROOT)\..\node_modules\react-native-touch-id",
 				);
 			};
 			name = Debug;
@@ -1337,6 +1357,8 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
+					"$(SRCROOT)\..\node_modules\react-native-keychain\RNKeychainManager",
+					"$(SRCROOT)\..\node_modules\react-native-touch-id",
 				);
 			};
 			name = Release;
@@ -1368,10 +1390,14 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
+					"$(SRCROOT)\..\node_modules\react-native-keychain\RNKeychainManager",
+					"$(SRCROOT)\..\node_modules\react-native-touch-id",
 				);
 			};
 			name = Debug;
@@ -1403,10 +1429,14 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
+					"$(SRCROOT)\..\node_modules\react-native-keychain\RNKeychainManager",
+					"$(SRCROOT)\..\node_modules\react-native-touch-id",
 				);
 			};
 			name = Release;
@@ -1437,10 +1467,14 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
+					"$(SRCROOT)\..\node_modules\react-native-keychain\RNKeychainManager",
+					"$(SRCROOT)\..\node_modules\react-native-touch-id",
 				);
 			};
 			name = Debug;
@@ -1471,10 +1505,14 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
+					"$(SRCROOT)\..\node_modules\react-native-keychain\RNKeychainManager",
+					"$(SRCROOT)\..\node_modules\react-native-touch-id",
 				);
 			};
 			name = Release;
